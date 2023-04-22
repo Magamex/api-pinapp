@@ -3,61 +3,112 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Client;
+use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class ClientController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Create a new AuthController instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware('auth:api', ['except' => ['kpiclients', 'listclients']]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Crea un nuevo cliente.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function createclient(Request $request)
     {
-        //
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'lastname' => 'required|string',
+            'age' => 'required|integer',
+            'birth_date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        if (!$token = auth()->attempt($validator->validated())) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $request->validate([
+            'name' => 'required|string',
+            'lastname' => 'required|string',
+            'age' => 'required|integer',
+            'birth_date' => 'required|date',
+        ]);
+
+        $client = Client::create($request->all());
+
+        return response()->json(['message' => 'Cliente creado exitosamente'], 201);
     }
 
     /**
-     * Display the specified resource.
+     * Obtiene el promedio de edad y la desviación estándar de las edades de todos los clientes.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function kpiclients()
     {
-        //
+        $clientes = Client::all();
+
+        $total_edades = 0;
+        foreach ($clientes as $cliente) {
+            $total_edades += $cliente->age;
+        }
+
+        $promedio_edad = $total_edades / count($clientes);
+
+        $varianza = 0;
+        foreach ($clientes as $cliente) {
+            $varianza += pow($cliente->age - $promedio_edad, 2);
+        }
+        $varianza = $varianza / count($clientes);
+
+        $desviacion_estandar = sqrt($varianza);
+
+        return response()->json([
+            'promedio_edad' => $promedio_edad,
+            'desviacion_estandar' => $desviacion_estandar,
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Obtiene una lista de todos los clientes con sus datos y fecha probable de muerte.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function listclients()
     {
-        //
-    }
+        $clientes = Client::all();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $lista_clientes = [];
+        foreach ($clientes as $cliente) {
+            $vida_restante = 70 - $cliente->age;
+            $fecha_probable_muerte = date('Y-m-d', strtotime("+$vida_restante years", strtotime($cliente->birth_date)));
+
+            $lista_clientes[] = [
+                'id' => $cliente->id,
+                'name' => $cliente->name,
+                'lastname' => $cliente->lastname,
+                'age' => $cliente->age,
+                'birth_date' => $cliente->birth_date,
+                'death_date' => $fecha_probable_muerte,
+            ];
+        }
+
+        return response()->json($lista_clientes);
     }
 }

@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClientController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +27,8 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user', [AuthController::class, 'userProfile']);
     Route::post('/change-pass', [AuthController::class, 'changePassWord']);
+
+    Route::post('/create-client', [ClientController::class, 'createclient']);
+    Route::get('/kpi-clients', [ClientController::class, 'kpiclients']);
+    Route::get('/list-clients', [ClientController::class, 'listclients']);
 });
