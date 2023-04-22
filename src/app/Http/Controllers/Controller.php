@@ -9,7 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  *@OA\Info(
- *  title="Your Application API document",
+ *  title="Api Pinapp",
  *  version="1.0.0",
  *),
  *@OA\SecurityScheme(
