@@ -9,8 +9,8 @@ if [ ! -d /.composer ]; then
 fi
 
 npm install
-composer install
-composer update
+composer install --ignore-platform-reqs
+composer update --no-scripts
 php artisan key:generate
 php artisan jwt:secret
 php artisan l5-swagger:generate
