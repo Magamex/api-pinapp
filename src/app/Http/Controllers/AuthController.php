@@ -115,6 +115,49 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    /**
+     * @OA\POST(
+     *     path="/api/register",
+     *     tags={"Authentication"},
+     *     summary="Create user",
+     *     description="Creation of a new user",
+     *     @OA\RequestBody(
+     *          @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string"
+     *                 ),
+     *                @OA\Property(
+     *                     property="password",
+     *                     type="string"
+     *                 ),
+     *                 example={"name": "Matias", "email": "matias@gmail.com", "password":"123456"}
+     *             )
+     *         )
+     *      ),
+     *      @OA\Response(response=201, description="Created",
+     *      @OA\JsonContent(@OA\Examples(example="result", value={
+            "message": "User successfully registered",
+            "user": {
+                "name": "Mario",
+                "email": "mario@gmail.com",
+                "updated_at": "2023-04-23T04:43:34.000000Z",
+                "created_at": "2023-04-23T04:43:34.000000Z",
+                "id": 2
+            }
+            }, summary="Message Success")) ),
+     *      @OA\Response(response=422, description="Unprocessable Content",
+     *      @OA\JsonContent(@OA\Examples(example="result", value={
+     *           "field_name": "Required field"
+     *       }, summary="An result object.")))
+     * )
+     */
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -124,7 +167,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            return response()->json($validator->errors(), 422);
         }
 
         $user = User::create(array_merge(
@@ -151,16 +194,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function refresh()
-    {
-        return $this->createNewToken(auth()->refresh());
-    }
-
-    /**
      * Get the authenticated User.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -180,8 +213,10 @@ class AuthController extends Controller
      *           "created_at": "2023-04-22T17:27:31.000000Z",
      *           "updated_at": "2023-04-22T17:27:31.000000Z"
      *       }, summary="An result object."))),
-     *     @OA\Response(response=400, description="Bad request"),
-     *     @OA\Response(response=404, description="Resource Not Found"),
+     *     @OA\Response(response=401, description="Unauthorized",
+     *     @OA\JsonContent(@OA\Examples(example="result", value={
+     *           "message": "Unauthenticated."
+     *       }, summary="An result object."))),
      *     security={{"bearerAuth": {} }}
      * )
      */

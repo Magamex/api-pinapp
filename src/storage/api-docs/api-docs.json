@@ -118,6 +118,82 @@
                 }
             }
         },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Create user",
+                "description": "Creation of a new user",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "Matias",
+                                    "email": "matias@gmail.com",
+                                    "password": "123456"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Message Success",
+                                        "value": {
+                                            "message": "User successfully registered",
+                                            "user": {
+                                                "name": "Mario",
+                                                "email": "mario@gmail.com",
+                                                "updated_at": "2023-04-23T04:43:34.000000Z",
+                                                "created_at": "2023-04-23T04:43:34.000000Z",
+                                                "id": 2
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "An result object.",
+                                        "value": {
+                                            "field_name": "Required field"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/user": {
             "get": {
                 "tags": [
@@ -148,11 +224,21 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "404": {
-                        "description": "Resource Not Found"
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "An result object.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -160,6 +246,340 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/clients": {
+            "get": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Get Clients",
+                "description": "Get Clients With Death Date",
+                "operationId": "d0b59aefd99ac8bf5df55775f7694a89",
+                "responses": {
+                    "200": {
+                        "description": "Get Clients",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "All Clients",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Matias",
+                                                "lastname": "Perez",
+                                                "age": 31,
+                                                "birth_date": "1991-12-12",
+                                                "death_date": "2031-04-02"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "Martin",
+                                                "lastname": "Perez",
+                                                "age": 20,
+                                                "birth_date": "1997-12-12",
+                                                "death_date": "2033-09-11"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Clients Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Empty Clients",
+                                        "value": {
+                                            "message": "No clients registered"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Create Client",
+                "description": "Creation of a new client",
+                "operationId": "7378216e9a0a1a2f8b57962c9e7533f0",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "lastname": {
+                                        "type": "string"
+                                    },
+                                    "age": {
+                                        "type": "integer"
+                                    },
+                                    "birth_date": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "Matias",
+                                    "lastname": "Angel",
+                                    "age": 31,
+                                    "birth_date": "1990-01-01"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Message Success",
+                                        "value": {
+                                            "message": "Client successfully created"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "An result object.",
+                                        "value": {
+                                            "field_name": "Required field"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Unauthorized",
+                                        "value": {
+                                            "error": "Unauthorized"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/clients/{id}": {
+            "get": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Get one client",
+                "description": "Get One client with death date",
+                "operationId": "7cf56b20f48719567554d88a95fc796c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Client",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get Client",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "One Client",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Matias",
+                                                "lastname": "Perez",
+                                                "age": 31,
+                                                "birth_date": "1991-12-12",
+                                                "death_date": "2031-04-02"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "message error",
+                                        "value": {
+                                            "message": "The client does not exist"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Remove one client",
+                "description": "Remove one client with ID",
+                "operationId": "e601b380b4a9beac21f19d9ac5be5f8a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Client",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 3
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Remove client",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Remove client",
+                                        "value": {
+                                            "message": "Client successfully removed"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Not ID",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "message error",
+                                        "value": {
+                                            "message": "Please provide a valid client ID"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "message error",
+                                        "value": {
+                                            "message": "The client does not exist"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/kpi-clients": {
+            "get": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Get KPI Clients",
+                "description": "Get KPI all Clients",
+                "operationId": "1be229ea6b7e903a86aa803eb23dff97",
+                "responses": {
+                    "200": {
+                        "description": "Get KPI",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "KPI Clients",
+                                        "value": {
+                                            "average_age": 50.33,
+                                            "standard_deviatio": 35.41
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found Clients",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Not Found Clients",
+                                        "value": {
+                                            "message": "Clients does not exist"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     },
