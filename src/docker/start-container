@@ -18,7 +18,10 @@ php artisan optimize:clear
 php artisan key:generate
 php artisan jwt:secret
 php artisan l5-swagger:generate
+
+php artisan migrate:fresh
 php artisan migrate
+
 chmod -R ugo+rw /.composer
 
 if [ ! -z "$PORT" ]; then
