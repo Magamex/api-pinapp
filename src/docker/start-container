@@ -9,9 +9,8 @@ if [ ! -d /.composer ]; then
 fi
 
 npm install
-composer install --ignore-platform-reqs
-composer update --no-scripts
-composer require tymon/jwt-auth:"dev-develop"
+composer install
+composer update
 
 php artisan key:generate
 php artisan jwt:secret
