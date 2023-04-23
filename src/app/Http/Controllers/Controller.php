@@ -8,18 +8,23 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
 /**
- *@OA\Info(
+ * @OA\Info(
  *  title="Api Pinapp",
  *  version="1.0.0",
- *),
- *@OA\SecurityScheme(
+ * ),
+ * @OA\SecurityScheme(
  *  securityScheme="bearerAuth",
  *  in="header",
  *  name="bearerAuth",
  *  type="http",
  *  scheme="bearer",
  *  bearerFormat="JWT",
- *),
+ * ),
+ * @OA\Get(
+ *     path="/",
+ *     description="Home page",
+ *     @OA\Response(response="default", description="Welcome page")
+ * )
  */
 class Controller extends BaseController
 {
