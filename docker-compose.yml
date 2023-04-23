@@ -23,9 +23,9 @@ services:
     ports:
       - '3306:3306'
     environment:
-      MYSQL_DATABASE: laravel_apipinapp
-      MYSQL_USER: pinapp
-      MYSQL_PASSWORD: pinapp
+      MYSQL_DATABASE: laravel_jwt_api
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: homestead
       MYSQL_ROOT_PASSWORD: secret
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
