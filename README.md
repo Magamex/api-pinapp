@@ -11,32 +11,11 @@ Laravel with JWT Authentication and Swagger Documentation
 * [jwt-auth](https://github.com/tymondesigns/jwt-auth)
 * [Swagger](https://github.com/DarkaOnLine/L5-Swagger)
 
-## Installation
-
-- Clone this repo or download it
-
-    ```bash
-    $ docker-compose build
-    $ docker-compose up -d
-    ```
-- Configure your .env file for authenticating via database
-
-    ```bash
-    $ docker exec -it  sh
-    $ composer update
-    $ php artisan key:generate
-    $ php artisan jwt:secret
-    $ php artisan l5-swagger:generate
-    $ php artisan migrate
-    ```
-
-- Visit `localhost`
-
 > **Note:**
 - You can now use ```Postman``` or ```Swagger``` to test the API:
 
 ## Swagger
-- ```http://localhost/api```
+- ```https://api-pinapp-production.up.railway.app/api```
 
 ## Authentication
 - ```POST /api/register``` –> Create user 
