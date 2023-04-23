@@ -12,6 +12,8 @@ npm install
 composer install
 composer update
 
+php artisan config:clear
+
 php artisan key:generate
 php artisan jwt:secret
 php artisan l5-swagger:generate
