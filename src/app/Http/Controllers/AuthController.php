@@ -55,7 +55,7 @@ class AuthController extends Controller
      *               "updated_at": "2023-04-22T17:27:31.000000Z"
      *           }
      *       }, summary="An result object.")) ),
-     *      @OA\Response(response=422, description="Unprocessable Content",
+     *      @OA\Response(response=400, description="Unprocessable Content",
      *      @OA\JsonContent(@OA\Examples(example="result", value={
      *           "error": "Verify email and password"
      *       }, summary="Required fields missing or wrong value(s)"))),
@@ -73,7 +73,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => 'Verify email and password'], 422);
+            return response()->json(['error' => 'Verify email and password'], 400);
         }
 
         if (!$token = auth()->attempt($validator->validated())) {
