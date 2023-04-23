@@ -58,7 +58,7 @@ class AuthController extends Controller
      *      @OA\Response(response=422, description="Unprocessable Content",
      *      @OA\JsonContent(@OA\Examples(example="result", value={
      *           "password": "The password must be at least 6 characters."
-     *       }, summary="An result object."))),
+     *       }, summary="Required fields missing or wrong value(s)"))),
      *      @OA\Response(response=401, description="Unauthorized",
      *      @OA\JsonContent(@OA\Examples(example="result", value={
      *           "error": "Unauthorized"
@@ -123,7 +123,7 @@ class AuthController extends Controller
      *      @OA\Response(response=422, description="Unprocessable Content",
      *      @OA\JsonContent(@OA\Examples(example="result", value={
      *           "field_name": "Required field"
-     *       }, summary="An result object.")))
+     *       }, summary="Required Field register.")))
      * )
      */
     public function register(Request $request)
