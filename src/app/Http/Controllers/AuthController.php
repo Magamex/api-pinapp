@@ -20,7 +20,7 @@ class AuthController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/login",
      *     tags={"Authentication"},
      *     summary="Login",
@@ -41,7 +41,7 @@ class AuthController extends Controller
      *             )
      *         )
      *      ),
-     *      @OA\Response(response=200, description="Login",
+     *      @OA\Response(response=201, description="Login",
      *      @OA\JsonContent(@OA\Examples(example="result", value={
      *           "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY4MjE4NjE4NiwiZXhwIjoxNjgyMTg5Nzg2LCJuYmYiOjE2ODIxODYxODYsImp0aSI6IkJvSXNNYVVBRnFMeWJuWjMiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.3ZCgdeCVNSZljy4G3za_kTIRF018QQTAw-FHfywRZCc",
      *           "token_type": "bearer",
@@ -84,7 +84,7 @@ class AuthController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/register",
      *     tags={"Authentication"},
      *     summary="Create user",
@@ -162,7 +162,7 @@ class AuthController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/user",
      *     tags={"Authentication"},
      *     summary="Authenticated User Profile",
