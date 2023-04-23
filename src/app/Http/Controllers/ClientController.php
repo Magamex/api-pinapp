@@ -6,109 +6,156 @@ use Illuminate\Http\Request;
 use App\Models\Client;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use DateTime;
+use DateInterval;
 
 class ClientController extends Controller
 {
     /**
-     * Create a new AuthController instance.
      *
      * @return void
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['kpiclients', 'listclients']]);
+        $this->middleware('auth:api', ['except' => ['kpiclients', 'getClient']]);
     }
 
     /**
-     * Crea un nuevo cliente.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function createclient(Request $request)
+    public function createClient(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'lastname' => 'required|string',
-            'age' => 'required|integer',
+            'age' => 'required|integer|between:1,100',
             'birth_date' => 'required|date',
         ]);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
+        {
             return response()->json($validator->errors(), 422);
         }
 
-        if (!$token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        $client = Client::create($validator->validated());
 
-        $request->validate([
-            'name' => 'required|string',
-            'lastname' => 'required|string',
-            'age' => 'required|integer',
-            'birth_date' => 'required|date',
-        ]);
-
-        $client = Client::create($request->all());
-
-        return response()->json(['message' => 'Cliente creado exitosamente'], 201);
+        return response()->json(['message' => 'Client successfully created',$client], 201);
     }
 
     /**
-     * Obtiene el promedio de edad y la desviación estándar de las edades de todos los clientes.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function removeClient($id)
+    {
+        $client = Client::find($id);
+
+        if (!$client)
+        {
+            return response()->json(['message' => 'The client does not exist'], 404);
+        }
+
+        $client->delete();
+
+        return response()->json(['message' => 'Client successfully removed'], 200);
+    }
+
+
+
+    /**
      *
      * @return \Illuminate\Http\Response
      */
-    public function kpiclients()
+    public function kpiClients()
     {
-        $clientes = Client::all();
+        $clients = Client::all();
 
-        $total_edades = 0;
-        foreach ($clientes as $cliente) {
-            $total_edades += $cliente->age;
+        $totalAges = 0;
+        foreach ($clients as $client)
+        {
+            $totalAges += $client->age;
         }
 
-        $promedio_edad = $total_edades / count($clientes);
+        $avgAge = $totalAges / count($clients);
 
-        $varianza = 0;
-        foreach ($clientes as $cliente) {
-            $varianza += pow($cliente->age - $promedio_edad, 2);
+        $vari = 0;
+        foreach ($clients as $client)
+        {
+            $vari += pow($client->age - $avgAge, 2);
         }
-        $varianza = $varianza / count($clientes);
+        $vari = $vari / count($clients);
 
-        $desviacion_estandar = sqrt($varianza);
+        $standDev= sqrt($vari);
 
         return response()->json([
-            'promedio_edad' => $promedio_edad,
-            'desviacion_estandar' => $desviacion_estandar,
+            'average_age' => round($avgAge,2),
+            'standard_deviatio' => round($standDev,2),
         ]);
     }
 
     /**
-     * Obtiene una lista de todos los clientes con sus datos y fecha probable de muerte.
      *
      * @return \Illuminate\Http\Response
      */
-    public function listclients()
+    public function getClient($id = null)
     {
-        $clientes = Client::all();
 
-        $lista_clientes = [];
-        foreach ($clientes as $cliente) {
-            $vida_restante = 70 - $cliente->age;
-            $fecha_probable_muerte = date('Y-m-d', strtotime("+$vida_restante years", strtotime($cliente->birth_date)));
+        if($id)
+        {
+            $client = Client::find($id);
 
-            $lista_clientes[] = [
-                'id' => $cliente->id,
-                'name' => $cliente->name,
-                'lastname' => $cliente->lastname,
-                'age' => $cliente->age,
-                'birth_date' => $cliente->birth_date,
-                'death_date' => $fecha_probable_muerte,
+            if(!$client)
+            {
+                return response()->json(['message' => 'The client does not exist'], 404);
+            }
+
+            return response()->json(array_merge($client), ['death_date' => $this->calculateDeath($client)]);
+        }
+
+        $clients = Client::all();
+
+        $listClients = [];
+        foreach ($clients as $client)
+        {
+            $listClients[] = [
+                'id' => $client->id,
+                'name' => $client->name,
+                'lastname' => $client->lastname,
+                'age' => $client->age,
+                'birth_date' => $client->birth_date,
+                'death_date' => $this->calculateDeath($client),
             ];
         }
 
-        return response()->json($lista_clientes);
+        return response()->json($listClients);
+    }
+
+    private function calculateDeath($client)
+    {
+        $tasaMortal = 0.01;
+
+        $age = $client->age;
+        $birthDate = new DateTime($client->birth_date);
+        $deathDate = clone $birthDate;
+        $deathDate->add(new DateInterval('P'.$age.'Y'));
+
+        for ($i = $age; $i < 120; $i++) {
+            $prob = 1 - $tasaMortal;
+            for ($j = 1; $j <= $i - $age; $j++) {
+                $prob *= (1 - $tasaMortal);
+            }
+            if (rand(0, 9999) < $prob * 10000) {
+                $deathDate->add(new DateInterval('P1Y'));
+            } else {
+                break;
+            }
+        }
+
+        $deathDate->setDate($deathDate->format('Y'), rand(1, 12), rand(1, 28));
+
+        return $deathDate->format('Y-m-d');
     }
 }

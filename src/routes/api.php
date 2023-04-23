@@ -15,6 +15,13 @@ use App\Http\Controllers\ClientController;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
+
+php artisan cache:clear
+php artisan view:clear
+php artisan route:cache
+php artisan config:cache
+php artisan optimize
+
 */
 
 /* Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -23,12 +30,10 @@ use App\Http\Controllers\ClientController;
 Route::group(['middleware' => 'api'], function ($router) {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user', [AuthController::class, 'userProfile']);
-    Route::post('/change-pass', [AuthController::class, 'changePassWord']);
 
-    Route::post('/create-client', [ClientController::class, 'createclient']);
-    Route::get('/kpi-clients', [ClientController::class, 'kpiclients']);
-    Route::get('/list-clients', [ClientController::class, 'listclients']);
+    Route::post('/clients', [ClientController::class, 'createClient']);
+    Route::delete('/clients/{id}', [ClientController::class, 'removeClient']);
+    Route::get('/kpi-clients', [ClientController::class, 'kpiClients']);
+    Route::get('/clients/{id?}', [ClientController::class, 'getClient']);
 });
