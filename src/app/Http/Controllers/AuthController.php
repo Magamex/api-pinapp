@@ -57,7 +57,7 @@ class AuthController extends Controller
      *       }, summary="An result object.")) ),
      *      @OA\Response(response=422, description="Unprocessable Content",
      *      @OA\JsonContent(@OA\Examples(example="result", value={
-     *           "password": "The password must be at least 6 characters."
+     *           "error": "Verify email and password"
      *       }, summary="Required fields missing or wrong value(s)"))),
      *      @OA\Response(response=401, description="Unauthorized",
      *      @OA\JsonContent(@OA\Examples(example="result", value={
@@ -73,7 +73,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()->json(['error' => 'Verify email and password'], 422);
         }
 
         if (!$token = auth()->attempt($validator->validated())) {
