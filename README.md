@@ -17,6 +17,9 @@ Laravel with JWT Authentication and Swagger Documentation
 ## Swagger
 - ```https://api-pinapp-production.up.railway.app/api```
 
+![image](https://user-images.githubusercontent.com/11765730/233863538-95c56d78-f121-4548-b066-6f3a79d4dcab.png)
+
+
 ## Authentication
 - ```POST /api/register``` –> Create user 
 - ```POST /api/login``` –> with email and password, obtain a JWT token
