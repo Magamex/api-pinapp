@@ -31,26 +31,6 @@ class AuthController extends Controller
      *     tags={"Authentication"},
      *     summary="Login",
      *     description="Login",
-     *     @OA\Parameter(
-     *         name="email",
-     *         in="query",
-     *         description="Correo electronico",
-     *         required=true,
-     *         example="matias@gmail.com",
-     *         @OA\Schema(
-     *              type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="password",
-     *         in="query",
-     *         description="Contrasenia",
-     *         required=true,
-     *         example="123456",
-     *         @OA\Schema(
-     *              type="string"
-     *         )
-     *     ),
      *     @OA\RequestBody(
      *          @OA\MediaType(
      *             mediaType="application/json",
@@ -143,15 +123,15 @@ class AuthController extends Controller
      *      ),
      *      @OA\Response(response=201, description="Created",
      *      @OA\JsonContent(@OA\Examples(example="result", value={
-            "message": "User successfully registered",
-            "user": {
-                "name": "Mario",
-                "email": "mario@gmail.com",
-                "updated_at": "2023-04-23T04:43:34.000000Z",
-                "created_at": "2023-04-23T04:43:34.000000Z",
-                "id": 2
-            }
-            }, summary="Message Success")) ),
+        "message": "User successfully registered",
+        "user": {
+            "name": "Mario",
+            "email": "mario@gmail.com",
+            "updated_at": "2023-04-23T04:43:34.000000Z",
+            "created_at": "2023-04-23T04:43:34.000000Z",
+            "id": 2
+        }
+        }, summary="Message Success")) ),
      *      @OA\Response(response=422, description="Unprocessable Content",
      *      @OA\JsonContent(@OA\Examples(example="result", value={
      *           "field_name": "Required field"
