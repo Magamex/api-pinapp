@@ -11,6 +11,8 @@ fi
 npm install
 composer install --ignore-platform-reqs
 composer update --no-scripts
+composer require tymon/jwt-auth:"dev-develop"
+
 php artisan key:generate
 php artisan jwt:secret
 php artisan l5-swagger:generate
