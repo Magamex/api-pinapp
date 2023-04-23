@@ -20,12 +20,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-
-    /**
      * @OA\POST(
      *     path="/api/login",
      *     tags={"Authentication"},
@@ -71,7 +65,6 @@ class AuthController extends Controller
      *       }, summary="An result object.")))
      * )
      */
-
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -90,11 +83,6 @@ class AuthController extends Controller
         return $this->createNewToken($token);
     }
 
-    /**
-     * Register a User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     /**
      * @OA\POST(
      *     path="/api/register",
@@ -173,11 +161,6 @@ class AuthController extends Controller
         return response()->json(['message' => 'User successfully signed out']);
     }
 
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     /**
      * @OA\GET(
      *     path="/api/user",

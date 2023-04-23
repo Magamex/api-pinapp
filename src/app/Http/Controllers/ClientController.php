@@ -21,11 +21,6 @@ class ClientController extends Controller
     }
 
     /**
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    /**
      * @OA\POST(
      *     path="/api/clients",
      *     tags={"Client"},
@@ -89,11 +84,6 @@ class ClientController extends Controller
         return response()->json(['message' => 'Client successfully created'], 201);
     }
 
-    /**
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\DELETE(
      *     path="/api/clients/{id}",
@@ -172,10 +162,6 @@ class ClientController extends Controller
 
 
     /**
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /**
      * @OA\GET(
      *     path="/api/kpi-clients",
      *     tags={"Client"},
@@ -241,10 +227,6 @@ class ClientController extends Controller
         ]);
     }
 
-    /**
-     *
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\GET(
      *     path="/api/clients",
