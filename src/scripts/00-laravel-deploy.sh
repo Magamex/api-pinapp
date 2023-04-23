@@ -12,12 +12,8 @@ php artisan route:cache
 echo "Running migrations..."
 php artisan migrate --force
 
-composer update
-
 php artisan key:generate
 
 php artisan jwt:secret
 
 php artisan l5-swagger:generate
-
-php artisan migrate
