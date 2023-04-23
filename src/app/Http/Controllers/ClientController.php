@@ -21,7 +21,7 @@ class ClientController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/clients",
      *     tags={"Client"},
      *     summary="Create Client",
@@ -85,7 +85,7 @@ class ClientController extends Controller
     }
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/clients/{id}",
      *     tags={"Client"},
      *     summary="Remove one client",
@@ -162,7 +162,7 @@ class ClientController extends Controller
 
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/kpi-clients",
      *     tags={"Client"},
      *     summary="Get KPI Clients",
@@ -228,7 +228,7 @@ class ClientController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/clients",
      *     tags={"Client"},
      *     summary="Get Clients",
@@ -321,7 +321,7 @@ class ClientController extends Controller
         return response()->json($listClients);
     }
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/clients/{id}",
      *     tags={"Client"},
      *     summary="Get one client",
